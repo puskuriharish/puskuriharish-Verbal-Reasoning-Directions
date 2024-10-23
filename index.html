@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direction Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Direction Quiz</h1>
+        <form id="quiz-form">
+            <!-- Questions will be dynamically injected here by JavaScript -->
+        </form>
+        <button id="submit-btn">Submit</button>
+    </div>
+
+    <div id="results-container" style="display:none;">
+        <h1>Your Quiz Results</h1>
+        <h2 id="score"></h2>
+        <div id="results"></div>
+        <button id="retake-quiz">Take the Quiz Again</button>
+    </div>
+
+    <script>
+        // Define questions, options, correct answers, images, and explanations
+        const questions = [
+            {
+                question: "One morning Udai and Vishal were talking to each other face to face at a crossing. If Vishal's shadow was exactly to the left of Udai, which direction was Udai facing?",
+                options: ["East", "West", "North", "South"],
+                answer: "North",
+                image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-38.png",
+                explanation: "Since Vishal's shadow is on the left side of Udai, Udai must be facing North."
+            },
+            {
+                question: "Y is in the East of X which is in the North of Z. If P is in the South of Z, then in which direction of Y, is P?",
+                options: ["North", "South", "South-East", "None of these"],
+                answer: "South",
+                image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-22.png",
+                explanation: "P is in the South-West of Y."
+            },
+            {
+                question: "If South-East becomes North, North-East becomes West and so on. What will West become?",
+                options: ["North-East", "North-West", "South-East", "South-West"],
+                answer: "South-East",
+                image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-33.png",
+                explanation: "The new name of West will become South-East."
+            },
+            {
+                question: "A man walks 5 km toward south and then turns to the right. After walking 3 km he turns to the left and walks 5 km. Now in which direction is he from the starting place?",
+                options: ["West", "South", "North-East", "South-West"],
+                answer: "South-West",
+                image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-20.png",
+                explanation: "The required direction is South-West."
+            },
+            {
+                question: "Rahul put his timepiece on the table in such a way that at 6 P.M. hour hand points to North. In which direction the minute hand will point at 9.15 P.M.?",
+                options: ["South-East", "South", "North", "West"],
+                answer: "West",
+                image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-14.png",
+                explanation: "At 9.15 P.M., the minute hand will point towards West."
+            },
+            {
+        question: "Rasik walked 20 m towards north. Then he turned right and walks 30 m. Then he turns right and walks 35 m. Then he turns left and walks 15 m. Finally, he turns left and walks 15 m. In which direction and how many meters is he from the starting position?",
+        options: ["15 m West", "30 m East", "30 m West", "45 m East"],
+        answer: "30 m West",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-7.png",
+        explanation: "Rasik is 30 m West from the starting point."
+    },
+    {
+        question: "Two cars start from the opposite places of a main road, 150 km apart. The first car runs for 25 km and takes a right turn and then runs 15 km. It then turns left and runs for another 25 km and then takes the direction back to reach the main road. In the meantime, due to a minor breakdown, the other car has run only 35 km along the main road. What would be the distance between the two cars at this point?",
+        options: ["65 km", "75 km", "80 km", "85 km"],
+        answer: "65 km",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-31u.png",
+        explanation: "The distance between the two cars is 65 km."
+    },
+    {
+        question: "Starting from the point X, Jayant walked 15 m towards west. He turned left and walked 20 m. He then turned left and walked 15 m. After this, he turned to his right and walked 12 m. How far and in which direction is Jayant now from X?",
+        options: ["32 m, South", "47 m, East", "42 m, North", "27 m, South"],
+        answer: "27 m, South",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-15.png",
+        explanation: "Jayant is 27 m South from point X."
+    },
+    {
+        question: "One evening before sunset Rekha and Hema were talking to each other face to face. If Hema's shadow was exactly to the right of Hema, which direction was Rekha facing?",
+        options: ["North", "South", "East", "Data is inadequate"],
+        answer: "South",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-36.png",
+        explanation: "Since Hema's shadow was to the right of her in the evening, Rekha was facing South."
+    },
+    {
+        question: "A boy rode his bicycle Northward, then turned left and rode 1 km, and again turned left and rode 2 km. He found himself 1 km west of his starting point. How far did he ride northward initially?",
+        options: ["1 km", "2 km", "3 km", "5 km"],
+        answer: "2 km",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-34.png",
+        explanation: "The boy rode 2 km Northward initially."
+    },
+    {
+        question: "K is 40 m South-West of L. If M is 40 m South-East of L, then M is in which direction of K?",
+        options: ["East", "West", "North-East", "South"],
+        answer: "East",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-29.png",
+        explanation: "M is in the East of K."
+    },
+    {
+        question: "A man walks 2 km towards North. Then he turns to East and walks 10 km. After this, he turns to North and walks 3 km. Again he turns towards East and walks 2 km. How far is he from the starting point?",
+        options: ["10 km", "13 km", "15 km", "None of these"],
+        answer: "13 km",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-17.png",
+        explanation: "The man is 13 km away from the starting point."
+    },
+    {
+        question: "The length and breadth of a room are 8 m and 6 m respectively. A cat runs along all four walls and finally along a diagonal order to catch a rat. How much total distance is covered by the cat?",
+        options: ["10", "14", "38", "48"],
+        answer: "38",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-21.png",
+        explanation: "The total distance covered by the cat is 38 m."
+    },
+    {
+        question: "One morning Sujata started to walk towards the Sun. After covering some distance, she turned to the right, then again to the right, and after covering some distance she again turns to the right. Now, in which direction is she facing?",
+        options: ["North", "South", "North-East", "South-West"],
+        answer: "North",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-11.png",
+        explanation: "After the sequence of turns, Sujata is facing North."
+    },
+    {
+        question: "Some boys are sitting in three rows all facing North such that A is in the middle row. P is just to the right of A but in the same row. Q is just behind P while R is in the North of A. In which direction of R is Q?",
+        options: ["South", "South-West", "North-East", "South-East"],
+        answer: "South-East",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-26.png",
+        explanation: "Q is in the South-East of R."
+    },
+    {
+        question: "One morning after sunrise, Vimal started to walk. During this walking, he met Stephen who was coming from the opposite direction. Vimal saw that Stephen's shadow was to the right of him (Vimal). To which direction was Vimal facing?",
+        options: ["East", "West", "South", "Data inadequate"],
+        answer: "South",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-28.png",
+        explanation: "Since the shadow was to the right of Vimal and it's morning, Vimal was facing South."
+    },
+    {
+        question: "Golu started from his house towards North. After covering a distance of 8 km, he turned left and covered a distance of 6 km. What is the shortest distance now from his house?",
+        options: ["10 km", "16 km", "14 km", "2 km"],
+        answer: "10 km",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-39.png",
+        explanation: "The shortest distance from his house is 10 km."
+    },
+    {
+        question: "P started from his house towards West. After walking a distance of 25 m, he turned to the right and walked 10 m. He then again turned to the right and walked 15 m. After this, he is to turn right at 135 degrees and cover 30 m. In which direction should he go?",
+        options: ["West", "South", "South-West", "South-East"],
+        answer: "South-West",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-10.png",
+        explanation: "He should go in the South-West direction."
+    },
+    {
+        question: "X started to walk straight towards south. After walking 5 m, he turned to the left and walked 3 m. After this, he turned to the right and walked 5 m. Now, to which direction is X facing?",
+        options: ["North-East", "South", "North", "South-West"],
+        answer: "South",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-12.png",
+        explanation: "X is facing South."
+    },
+    {
+        question: "Hemant in order to go to university started from his house in the east and came to a crossing. The road to the left ends in a theatre, straight ahead is the hospital. In which direction is the university?",
+        options: ["North", "South", "East", "West"],
+        answer: "North",
+        image: "https://www.indiabix.com/_files/images/verbal-reasoning/direction-sense/4-3-1-30u.png",
+        explanation: "The university is to the North."
+    }
+
+
+        ];
+        const quizForm = document.getElementById('quiz-form');
+        const resultsContainer = document.getElementById('results-container');
+        const retakeQuizButton = document.getElementById('retake-quiz');
+
+        // Populate the quiz form with questions and options
+        questions.forEach((q, index) => {
+            const questionHtml = `
+                <div class="question">
+                    <p>${index + 1}. ${q.question}</p>
+                    ${q.options.map((option) => `
+                        <label>
+                            <input type="radio" name="question${index}" value="${option}" required>
+                            ${option}
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+            quizForm.innerHTML += questionHtml;
+        });
+
+        // Handle the submit button click
+        document.getElementById('submit-btn').addEventListener('click', function (e) {
+            e.preventDefault();
+            let score = 0;
+            const results = [];
+
+            // Check answers and store results
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                if (selectedOption) {
+                    const userAnswer = selectedOption.value;
+                    const isCorrect = userAnswer === q.answer;
+                    if (isCorrect) {
+                        score++;
+                    }
+                    results.push({
+                        question: q.question,
+                        selected: userAnswer,
+                        correct: isCorrect,
+                        correctAnswer: q.answer,
+                        image: q.image,
+                        explanation: q.explanation
+                    });
+                }
+            });
+
+            // Show results
+            displayResults(score, results);
+        });
+
+        // Function to display results
+        function displayResults(score, results) {
+            document.getElementById('quiz-form').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'none';
+            resultsContainer.style.display = 'block';
+
+            // Display the score
+            document.getElementById('score').textContent = `You scored ${score} out of ${results.length}!`;
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            // Display each result with explanation and image
+            results.forEach((result, index) => {
+                const questionHtml = `
+                    <div class="result">
+                        <h3>Question ${index + 1}: ${result.question}</h3>
+                        <p>Your answer: <strong>${result.selected}</strong></p>
+                        <p>${result.correct ? 'Correct!' : 'Wrong!'} The correct answer is: <strong>${result.correctAnswer}</strong></p>
+                        <img src="${result.image}" alt="Question Image">
+                        <p>${result.explanation}</p>
+                    </div>
+                `;
+                resultsDiv.innerHTML += questionHtml;
+            });
+        }
+
+        // Handle retake quiz button click
+        retakeQuizButton.addEventListener('click', function () {
+            location.reload();
+        });
+    </script>
+</body>
+</html>
